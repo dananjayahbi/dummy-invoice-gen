@@ -1,0 +1,32 @@
+[
+  {
+    "id": "professional",
+    "name": "Professional",
+    "subject": "Invoice #{invoiceNumber} from {companyName}",
+    "body": "Dear {clientName},\n\nThank you for your business. Please find attached invoice #{invoiceNumber} for the services/products provided.\n\nInvoice Details:\n- Invoice Number: {invoiceNumber}\n- Invoice Date: {invoiceDate}\n- Amount Due: ${totalAmount}\n- Due Date: {dueDate}\n\nPlease process the payment at your earliest convenience. If you have any questions regarding this invoice, please don't hesitate to contact us.\n\nBest regards,\n{companyName}"
+  },
+  {
+    "id": "friendly",
+    "name": "Friendly",
+    "subject": "Your invoice from {companyName} - #{invoiceNumber}",
+    "body": "Hi {clientName}!\n\nHope you're doing well! Attached is your invoice #{invoiceNumber} for our recent work together.\n\n📄 Invoice #{invoiceNumber}\n📅 Date: {invoiceDate}\n💰 Total: ${totalAmount}\n⏰ Due: {dueDate}\n\nLet me know if you have any questions - always happy to help!\n\nThanks for your continued partnership!\n\n{companyName}"
+  },
+  {
+    "id": "formal",
+    "name": "Formal",
+    "subject": "Invoice #{invoiceNumber} - Payment Required",
+    "body": "Dear {clientName},\n\nThis email is to formally submit invoice #{invoiceNumber} dated {invoiceDate} for your review and payment processing.\n\nINVOICE SUMMARY:\nInvoice Number: {invoiceNumber}\nIssue Date: {invoiceDate}\nTotal Amount Due: ${totalAmount}\nPayment Due Date: {dueDate}\n\nThe complete invoice is attached to this email. Payment should be remitted according to the terms specified in the invoice.\n\nShould you require any clarification or additional documentation, please contact our accounting department.\n\nRespectfully,\n{companyName}\nAccounts Receivable Department"
+  },
+  {
+    "id": "brief",
+    "name": "Brief",
+    "subject": "Invoice #{invoiceNumber} - {companyName}",
+    "body": "Hi {clientName},\n\nAttached: Invoice #{invoiceNumber}\nDate: {invoiceDate}\nAmount: ${totalAmount}\nDue: {dueDate}\n\nPlease process at your convenience.\n\nThanks,\n{companyName}"
+  },
+  {
+    "id": "reminder",
+    "name": "Reminder",
+    "subject": "Reminder: Invoice #{invoiceNumber} from {companyName}",
+    "body": "Dear {clientName},\n\nThis is a friendly reminder about invoice #{invoiceNumber} issued on {invoiceDate}.\n\nPayment Details:\n- Invoice: #{invoiceNumber}\n- Amount: ${totalAmount}\n- Due Date: {dueDate}\n- Status: Payment Pending\n\nWe appreciate your prompt attention to this matter. The invoice is attached for your convenience.\n\nIf payment has already been sent, please disregard this reminder. Otherwise, please arrange payment at your earliest convenience.\n\nThank you for your business.\n\nBest regards,\n{companyName}"
+  }
+]
