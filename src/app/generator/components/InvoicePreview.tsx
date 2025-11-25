@@ -3,14 +3,16 @@
 import React, { useRef, useState } from 'react';
 import { Download, Printer } from 'lucide-react';
 import { downloadInvoicePDF, printInvoice } from '@/lib/utils/pdf-generator';
+import { InvoiceData } from '@/types/invoice';
 
 interface InvoicePreviewProps {
   html: string;
+  invoiceData: InvoiceData;
   filename?: string;
   minimal?: boolean; // For toolbar mode - only show buttons, no iframe
 }
 
-export const InvoicePreview: React.FC<InvoicePreviewProps> = ({ html, filename = 'invoice', minimal = false }) => {
+export const InvoicePreview: React.FC<InvoicePreviewProps> = ({ html, invoiceData, filename = 'invoice', minimal = false }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +21,7 @@ export const InvoicePreview: React.FC<InvoicePreviewProps> = ({ html, filename =
     setIsDownloading(true);
     setError(null);
     try {
-      await downloadInvoicePDF(html, `${filename}.pdf`);
+      await downloadInvoicePDF(invoiceData, `${filename}.pdf`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to download PDF');
     } finally {

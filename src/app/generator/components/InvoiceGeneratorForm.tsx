@@ -3,11 +3,10 @@
 import React, { useState, useCallback, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { InvoiceData, InvoiceLineItem, InvoiceTemplate } from '@/types/invoice';
 import { generateInvoiceHTML } from '@/lib/utils/invoice-generator';
-import { downloadInvoicePDF, printInvoice } from '@/lib/utils/pdf-generator';
 import { generateRandomInvoiceData } from '@/lib/utils/random-invoice-generator';
 
 interface InvoiceGeneratorFormProps {
-  onPreview: (html: string, companyName: string, invoiceData: {
+  onPreview: (html: string, companyName: string, invoiceData: InvoiceData, summaryData: {
     companyName: string;
     clientName: string;
     invoiceNumber: string;
@@ -193,7 +192,7 @@ export const InvoiceGeneratorForm = forwardRef<InvoiceGeneratorFormRef, InvoiceG
     const taxAmount = includeTaxDetails ? (subtotal * taxRate) / 100 : 0;
     const totalAmount = subtotal + taxAmount;
     
-    onPreview(html, companyName, {
+    onPreview(html, companyName, invoiceData, {
       companyName,
       clientName,
       invoiceNumber,

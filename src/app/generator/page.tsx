@@ -8,7 +8,7 @@ import { InvoicePreview } from './components/InvoicePreview';
 import { TemplateChooserModal } from './components/TemplateChooserModal';
 import { EmailInvoiceModal } from './components/EmailInvoiceModal';
 import { generatePDFBase64 } from '@/lib/utils/pdf-generator';
-import { InvoiceTemplate } from '@/types/invoice';
+import { InvoiceTemplate, InvoiceData } from '@/types/invoice';
 
 export default function GeneratorPage() {
   const [previewHTML, setPreviewHTML] = useState<string | null>(null);
@@ -20,7 +20,8 @@ export default function GeneratorPage() {
   const [selectedTemplate, setSelectedTemplate] = useState<InvoiceTemplate>('professional');
   const [pdfBase64, setPdfBase64] = useState<string>('');
   const [isGeneratingEmail, setIsGeneratingEmail] = useState(false);
-  const [invoiceData, setInvoiceData] = useState({
+  const [currentInvoiceData, setCurrentInvoiceData] = useState<InvoiceData | null>(null);
+  const [invoiceSummary, setInvoiceSummary] = useState({
     companyName: '',
     clientName: '',
     invoiceNumber: '',
@@ -38,7 +39,7 @@ export default function GeneratorPage() {
     console.log('selectedTemplate state changed to:', selectedTemplate);
   }, [selectedTemplate]);
 
-  const handlePreview = (html: string, company: string, data: {
+  const handlePreview = (html: string, company: string, invoiceData: InvoiceData, summaryData: {
     companyName: string;
     clientName: string;
     invoiceNumber: string;
@@ -60,7 +61,8 @@ export default function GeneratorPage() {
     
     setCompanyName(filenameWithId);
     setPreviewHTML(html);
-    setInvoiceData(data);
+    setCurrentInvoiceData(invoiceData);
+    setInvoiceSummary(summaryData);
     setShowPreviewButtons(true);
     // Don't auto-switch tabs - let user control tab navigation
   };
@@ -154,12 +156,12 @@ export default function GeneratorPage() {
 
   // Handle email button click - generate PDF first, then open modal
   const handleEmailClick = async () => {
-    if (!previewHTML) return;
+    if (!currentInvoiceData) return;
     
     setIsGeneratingEmail(true);
     try {
       // Generate PDF in background before opening modal
-      const base64 = await generatePDFBase64(previewHTML);
+      const base64 = await generatePDFBase64(currentInvoiceData);
       setPdfBase64(base64);
       
       // Open modal only after PDF is ready
@@ -215,10 +217,10 @@ export default function GeneratorPage() {
             Preview Invoice
           </button>
 
-          {showPreviewButtons && previewHTML && (
+          {showPreviewButtons && previewHTML && currentInvoiceData && (
             <div className="pt-4 border-t border-gray-200 space-y-3">
               <p className="text-sm font-medium text-gray-700">Actions:</p>
-              <InvoicePreview html={previewHTML} filename={companyName} minimal={true} />
+              <InvoicePreview html={previewHTML} invoiceData={currentInvoiceData} filename={companyName} minimal={true} />
               
               <button
                 onClick={handleEmailClick}
@@ -320,17 +322,17 @@ export default function GeneratorPage() {
       />
 
       {/* Email Invoice Modal */}
-      {isEmailModalOpen && previewHTML && (
+      {isEmailModalOpen && currentInvoiceData && (
         <EmailInvoiceModal
           isOpen={isEmailModalOpen}
           onClose={() => setIsEmailModalOpen(false)}
           pdfBase64={pdfBase64}
-          companyName={invoiceData.companyName}
-          clientName={invoiceData.clientName}
-          invoiceNumber={invoiceData.invoiceNumber}
-          invoiceDate={invoiceData.invoiceDate}
-          dueDate={invoiceData.dueDate}
-          totalAmount={invoiceData.totalAmount}
+          companyName={invoiceSummary.companyName}
+          clientName={invoiceSummary.clientName}
+          invoiceNumber={invoiceSummary.invoiceNumber}
+          invoiceDate={invoiceSummary.invoiceDate}
+          dueDate={invoiceSummary.dueDate}
+          totalAmount={invoiceSummary.totalAmount}
         />
       )}
     </div>
